@@ -6,8 +6,8 @@ import os
 import glob
 from pytesseract import Output
 
-#tess.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
-tess.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
+tess.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
+#tess.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
 
 cong = r'--oem 3 --psm 6 outputbase digits'
 
@@ -92,7 +92,7 @@ print('\n-----------------------------------------------------')
 
 
 import json
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from numpy import product
 import base64
 
@@ -101,7 +101,7 @@ app = Flask(__name__,template_folder = 'template')
 
 @app.route('/')
 def index():
-    return app.send_static_file('index.html')
+    return render_template('index.html')
     
 
 @app.route('/product')
