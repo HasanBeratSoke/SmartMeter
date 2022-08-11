@@ -1,1 +1,1 @@
-web:gunicorn temp:app
+web:python ocr_tesseract.py
