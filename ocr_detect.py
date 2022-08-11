@@ -6,8 +6,8 @@ import os
 import glob
 from pytesseract import Output
 
-tess.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
-#tess.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
+#tess.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
+tess.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
 
 cong = r'--oem 3 --psm 6 outputbase digits'
 
