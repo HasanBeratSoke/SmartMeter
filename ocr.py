@@ -99,6 +99,11 @@ import base64
 app = Flask(__name__,template_folder = 'template')
 
 
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+    
+
 @app.route('/product')
 def get_products():
     return jsonify({'product': "Hello World"})
