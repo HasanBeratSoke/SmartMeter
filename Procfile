@@ -1,1 +1,1 @@
-web:python ocr_tesseract.py
+web: gunicorn ocr_tesseract:app
