@@ -1,1 +1,1 @@
-web: gunicorn --bind 0.0.0.0:5000 --workers 3 --log-level debug --log-file - --access-logfile - --error-logfile - --timeout 120 --reload --reload-engine auto --reload-extra-file ocr_detect.py
+web: gunicorn app:app
