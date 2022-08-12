@@ -1,1 +1,1 @@
-web: gunicorn ocr_tesseract:app
+web: gunicorn wsgi:app  
