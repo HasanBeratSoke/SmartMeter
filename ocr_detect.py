@@ -97,14 +97,18 @@ from numpy import product
 import base64
 
 app = Flask(__name__,template_folder = 'template')
+from flask import send_from_directory     
 
+@app.route('/favicon.ico') 
+def favicon(): 
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 @app.route('/')
 def index():
     return render_template('index.html')
     
 
-@app.route('/product')
+@app.route('/product', methods=['POST', 'GET'])
 def get_products():
     return jsonify({'product': "Hello World"})
 
