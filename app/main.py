@@ -105,7 +105,7 @@ def favicon():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return "<h1>beylerrr</h1>"
     
 
 @app.route('/product', methods=['POST', 'GET'])
@@ -130,7 +130,6 @@ def base():
     cıktı = tess.image_to_string(img_canny,config=cong)
     return jsonify(cıktı)
 
-app.run(host='0.0.0.0', debug=True)
 
 
 

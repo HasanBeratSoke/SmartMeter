@@ -1,1 +1,1 @@
-web: python3 ocr_detect.py 
+web: gunicorn wsgi:app
