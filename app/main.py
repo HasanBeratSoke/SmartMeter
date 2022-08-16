@@ -1,7 +1,6 @@
 import pytesseract as tess
 import cv2 as cv
 import numpy as np
-import matplotlib.pyplot as plt
 import os
 import glob
 from pytesseract import Output
