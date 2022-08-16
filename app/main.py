@@ -107,7 +107,7 @@ def index():
     return "<h1>beylerrr</h1>"
     
 
-@app.route('/product', methods=['POST', 'GET'])
+@app.route('/product', methods=['GET'])
 def get_products():
     return jsonify({'product': "Hello World"})
 
