@@ -2,3 +2,7 @@ tesseract-ocr
 tesseract-ocr-eng
 libgl1
 libarchive13
+libsm6
+libxrender1
+libfontconfig1
+libice6
