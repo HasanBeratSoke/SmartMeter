@@ -1,3 +1,6 @@
+#include <ArduinoHttpClient.h>
+//#include <WiFi101.h>
+#include <ArduinoJson.h>
 #include "Base64.h"
 #include "esp_camera.h"
 #include <WiFi.h>
@@ -5,18 +8,29 @@
 #include "camera_pins.h"
 #include <WString.h>
 
+
 const char* ssid = "HBS";
 const char* password = "kayserim38";
+const char* herokuapp = "https://gas-reader.herokuapp.com/";
+
+const char herokuaddress[]="https://gas-reader.herokuapp.com/";
+int port = 80;
 
 const int ledPin = 4;
 
 void startCameraServer();
 
+WiFiClient wifi;
+
 void setup() {
+  
+  
   pinMode(ledPin, OUTPUT);
   Serial.begin(115200);
   Serial.setDebugOutput(true);
   Serial.println();
+
+  
 
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
@@ -66,6 +80,7 @@ void setup() {
   s->set_framesize(s, FRAMESIZE_QVGA);
 
   WiFi.begin(ssid, password);
+  
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -80,17 +95,21 @@ void setup() {
   Serial.print(WiFi.localIP());
   Serial.println("' to connect");
 
+  
+
 
   String jsonData = "{\"photo\":\"" + Photo2Base64() + "\"}";
   String photoPath = "/esp32-cam";
   Serial.println("Base-64 kodu: "+Photo2Base64());
 
 
+  
+
 
 }
 
 void loop() {
-  digitalWrite(ledPin, HIGH);
+  digitalWrite(ledPin, LOW);
   delay(10000);
 
 }
