@@ -1,5 +1,4 @@
-#include <Base64.h>
-
+#include "Base64.h"
 #include "esp_camera.h"
 #include <WiFi.h>
 #define CAMERA_MODEL_AI_THINKER // Has PSRAM
@@ -84,14 +83,14 @@ void setup() {
 
   String jsonData = "{\"photo\":\"" + Photo2Base64() + "\"}";
   String photoPath = "/esp32-cam";
-  Serial.println(Photo2Base64());
+  Serial.println("Base-64 kodu: "+Photo2Base64());
 
 
 
 }
 
 void loop() {
-  //digitalWrite(ledPin, HIGH);
+  digitalWrite(ledPin, HIGH);
   delay(10000);
 
 }
