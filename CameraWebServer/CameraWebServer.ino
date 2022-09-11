@@ -1,6 +1,7 @@
-#include <ArduinoHttpClient.h>
+//#include <ArduinoHttpClient.h>
 //#include <WiFi101.h>
 #include <ArduinoJson.h>
+#include "HTTPClient.h"
 #include "Base64.h"
 #include "esp_camera.h"
 #include <WiFi.h>
@@ -11,9 +12,9 @@
 
 const char* ssid = "HBS";
 const char* password = "kayserim38";
-const char* herokuapp = "https://gas-reader.herokuapp.com/";
+const char* herokuapp = "https://gas-reader.herokuapp.com";
 
-const char herokuaddress[]="https://gas-reader.herokuapp.com/";
+const char herokuaddress[] = "https://gas-reader.herokuapp.com";
 int port = 80;
 
 const int ledPin = 4;
@@ -21,16 +22,18 @@ const int ledPin = 4;
 void startCameraServer();
 
 WiFiClient wifi;
+//HttpClient client = HttpClient(wifi, herokuaddress, port);
 
+//http.addHeader("Content-Type", "application/json"); 
 void setup() {
   
-  
+
   pinMode(ledPin, OUTPUT);
   Serial.begin(115200);
   Serial.setDebugOutput(true);
   Serial.println();
 
-  
+
 
   camera_config_t config;
   config.ledc_channel = LEDC_CHANNEL_0;
@@ -80,7 +83,7 @@ void setup() {
   s->set_framesize(s, FRAMESIZE_QVGA);
 
   WiFi.begin(ssid, password);
-  
+
 
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
@@ -95,22 +98,71 @@ void setup() {
   Serial.print(WiFi.localIP());
   Serial.println("' to connect");
 
-  
 
-
-  String jsonData = "{\"photo\":\"" + Photo2Base64() + "\"}";
-  String photoPath = "/esp32-cam";
-  Serial.println("Base-64 kodu: "+Photo2Base64());
 
 
   
+  //String photoPath = "/esp32-cam";
+  //Serial.println("Base-64 kodu: " + Photo2Base64());
+
 
 
 }
 
 void loop() {
-  digitalWrite(ledPin, LOW);
-  delay(10000);
+  //String postData = Photo2Base64();
+  //String jsonData = "{\"base64\":\"" + Photo2Base64() + "\"}";
+  //String contentType = "application/json";
+  
+  HTTPClient http; 
+  http.begin("https://gas-reader.herokuapp.com/base");  
+  http.addHeader("Content-Type", "application/json");
+  
+  Serial.println("making POST request");
+  
+  StaticJsonDocument<200> doc;
+    // Add values in the document
+    //
+    //doc["base64"] = Photo2Base64();
+    //String b = Photo2Base64();
+    String jsonData = "{\"base64\":\"" + Photo2Base64() + "\"}";
+   
+    // Add an array.
+    //
+    
+    String requestBody;
+    //serializeJson(doc, requestBody);
+    Serial.println("Base-64 kodu: " + Photo2Base64());
+    Serial.println("JSOnDATA---->  "+jsonData);
+    Serial.println("REQUESTBODY---->  "+requestBody); 
+    int httpResponseCode = http.POST(jsonData);
+ 
+    if(httpResponseCode>0){
+       
+      String response = http.getString();                       
+       
+      Serial.println(httpResponseCode);   
+      Serial.println(response);
+     
+    }
+    else {
+     
+      //Serial.printf("Error occurred while sending HTTP POST: %s\n", httpClient.errorToString(statusCode).c_str());
+       
+    }
+  
+  // read the status code and body of the response
+  //int statusCode = client.responseStatusCode();
+  //String response = client.responseBody();
+
+  Serial.print("Status code: ");
+  //Serial.println(statusCode);
+  Serial.print("Response: ");
+//  Serial.println(response);
+
+  Serial.println("Wait five seconds");
+  delay(5000);
+
 
 }
 

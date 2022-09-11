@@ -110,6 +110,16 @@ def get_products():
 
 
 
+@app.route('/esp', methods=['GET'])
+def get_esp():
+    data = request.get_data()
+    return data
+
+    
+
+
+
+
 @app.route('/base', methods=['POST'])
 def base():
     data = request.get_json()
