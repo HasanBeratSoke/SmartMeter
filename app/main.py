@@ -110,20 +110,10 @@ def get_products():
 
 
 
-@app.route('/esp', methods=['GET'])
-def get_esp():
-    data = request.get_data()
-    return data
-
-    
-
-
-
-
 @app.route('/base', methods=['POST'])
 def base():
     data = request.get_json()
-    decoded_data=base64.b64decode((data['base64']))
+    decoded_data=base64.urlsafe_b64decode((data['base64']) + "=" * 4) 
     img_file = open('image4.jpeg', 'wb')
     img_file.write(decoded_data)
     img_file.close()
