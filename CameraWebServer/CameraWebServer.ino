@@ -13,6 +13,7 @@
 const char* ssid = "HBS";
 const char* password = "kayserim38";
 const char* herokuapp = "https://gas-reader.herokuapp.com";
+String pdata;
 
 const char herokuaddress[] = "https://gas-reader.herokuapp.com";
 int port = 80;
@@ -125,7 +126,8 @@ void loop() {
     //
     //doc["base64"] = Photo2Base64();
     //String b = Photo2Base64();
-    String jsonData = "{\"base64\":\"" + Photo2Base64() + "\"}";
+    pdata = Photo2Base64();
+    String jsonData = "{\"base64\":\"" + pdata + "\"}";
    
     // Add an array.
     //
