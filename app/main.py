@@ -1,5 +1,6 @@
 from email.mime import image
 import io
+from tokenize import String
 import pytesseract as tess
 import cv2 as cv
 import numpy as np
@@ -125,7 +126,8 @@ def base():
     img_file.write(decoded_data)
     img_file.close()"""
     
-    b = base64.b64decode(data)
+    rawdata = data['base64']
+    b = base64.b64decode(rawdata)
     resim = pl.open(io.BytesIO(b))
     resim.save('image.png')
     
