@@ -117,7 +117,7 @@ def get_products():
 def base():
     data = request.get_json()
     print('---------------------------------------')
-    print(data)
+    print(data['base64'])
     print('---------------------------------------')
     #decoded_data=base64.urlsafe_b64decode((data['base64']) + '=' * (-len(data['base64']) % 4)) 
     #decoded_data = base64.standard_b64decode(data['base64']);
@@ -128,8 +128,8 @@ def base():
     b = base64.b64decode(data)
     resim = pl.open(io.BytesIO(b))
     resim.save('image.png')
-
-    print(data['base64'])
+    
+    #print(data['base64'])
     img = cv.imread('image.png')
     img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     img_thresh = thresholding(img_gray)
