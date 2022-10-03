@@ -1,9 +1,12 @@
+from email.mime import image
+import io
 import pytesseract as tess
 import cv2 as cv
 import numpy as np
 import os
 import glob
 from pytesseract import Output
+from PIL import Image as pl
 
 #tess.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 tess.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
@@ -113,12 +116,21 @@ def get_products():
 @app.route('/base', methods=['POST'])
 def base():
     data = request.get_json()
-    decoded_data=base64.urlsafe_b64decode((data['base64']) + '=' * (-len(data['base64']) % 4)) 
-    img_file = open('image4.jpeg', 'wb')
+    print('---------------------------------------')
+    print(data)
+    print('---------------------------------------')
+    #decoded_data=base64.urlsafe_b64decode((data['base64']) + '=' * (-len(data['base64']) % 4)) 
+    #decoded_data = base64.standard_b64decode(data['base64']);
+    """img_file = open('image4.jpeg', 'wb')
     img_file.write(decoded_data)
-    img_file.close()
+    img_file.close()"""
+    
+    b = base64.b64decode(data)
+    resim = pl.open(io.BytesIO(b))
+    resim.save('image.png')
+
     print(data['base64'])
-    img = cv.imread('image4.jpeg')
+    img = cv.imread('image.png')
     img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     img_thresh = thresholding(img_gray)
     img_open = opening(img_thresh)

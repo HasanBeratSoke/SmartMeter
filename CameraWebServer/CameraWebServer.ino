@@ -163,7 +163,7 @@ void loop() {
 //  Serial.println(response);
 
   Serial.println("Wait five seconds");
-  delay(5000);
+  delay(10000);
 
 
 }
