@@ -137,7 +137,7 @@ void loop() {
     
     String requestBody;
     //serializeJson(doc, requestBody);
-    Serial.println("Base-64 kodu: " + grabImage());
+    Serial.println("Base-64 kodu: " + pdata);
     Serial.println("JSOnDATA---->  "+jsonData);
     Serial.println("REQUESTBODY---->  "+requestBody); 
     int httpResponseCode = http.POST(jsonData);
@@ -171,23 +171,17 @@ void loop() {
 
 }
 
-String encoded = "";
+
 String grabImage(){
 
   camera_fb_t* fb = esp_camera_fb_get();
-  if(!fb || fb->format != PIXFORMAT_JPEG){
-  }else{
-    #if USE_TFT_ESPI
-      TJpgDec.drawJpg(-40, 0, (const uint8_t*)fb->buf, fb->len);
-    #else
-      delay(40);    
-    #endif
-    
-    String encoded = base64::encode(fb->buf, fb->len);
-    Serial.write(encoded.c_str(), encoded.length());    
-    Serial.println();
-  }
+ 
+  String encoded = base64::encode(fb->buf, fb->len);
+  Serial.write(encoded.c_str(), encoded.length());    
+  Serial.println();
+ 
   esp_camera_fb_return(fb);
+  
   return encoded;
 }
 
