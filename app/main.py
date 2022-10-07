@@ -1,7 +1,7 @@
 from email.mime import image
 import io
 from stat import filemode
-from tkinter import Image
+#from tkinter import Image
 from tokenize import String
 import pytesseract as tess
 import cv2 as cv
@@ -10,6 +10,10 @@ import os
 import glob
 from pytesseract import Output
 from PIL import Image as pl
+import json
+from flask import Flask, request, jsonify, render_template
+from numpy import product
+import base64
 
 
 #tess.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
@@ -97,10 +101,7 @@ print('\n-----------------------------------------------------')
 print('\n-----------------------------------------------------')
 
 
-import json
-from flask import Flask, request, jsonify, render_template
-from numpy import product
-import base64
+
 
 app = Flask(__name__,template_folder = 'template')
 from flask import send_from_directory     
