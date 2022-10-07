@@ -151,7 +151,7 @@ def base():
 
 
     #print(data['base64'])
-    img = cv.imread('image.png')
+    img = cv.imread('test.jpeg')
     img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     img_thresh = thresholding(img_gray)
     img_open = opening(img_thresh)
