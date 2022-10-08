@@ -1,5 +1,5 @@
 
-from email.mime import image
+#from email.mime import image
 import io
 from stat import filemode
 #from tkinter import Image
@@ -72,36 +72,6 @@ def deskew(image):
 def match_template(image, template):
     return cv.matchTemplate(image, template, cv.TM_CCOEFF_NORMED)
 
-'''
-img = cv.imread('sayi2.jpeg')
-img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-img_thresh = thresholding(img_gray)
-img_open = opening(img_thresh)
-img_canny = canny(img_open)
-'''
-#iw, ih, ic = img.shape
-
-#d = tess.image_to_data(img, output_type=Output.DICT, config=cong)
-#print(d.keys())
-
-'''n_boxes = len(d['text'])
-for i in range(n_boxes):
-    if int(float((d['conf'][i]))) > 20:
-        (x, y, w, h) = (d['left'][i], d['top'][i], d['width'][i], d['height'][i])
-        cv.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)     # draw the bounding box around the text
-        cv.putText(img, d['text'][i], (x, y - 10), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-        print(d['text'][i])
-
-        #img = cv.rectangle(img_canny, (x, y), (x + iw, y + ih), (255, 255, 0), 4)
-        #img = cv.putText(img, d['text'][i], (x, y), cv.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 255), 2)'''
-    
-print('\n-----------------------------------------------------')
-#print(tess.image_to_string(img_canny,config=cong))
-print('\n-----------------------------------------------------')
-#print(tess.image_to_data(img_canny, config=cong))
-print('\n-----------------------------------------------------')
-
-
 
 
 app = Flask(__name__,template_folder = 'template')
@@ -148,8 +118,6 @@ def base():
     """
     
 
-
-
     #print(data['base64'])
     img = cv.imread('test.jpeg')
     img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
@@ -157,7 +125,10 @@ def base():
     img_open = opening(img_thresh)
     img_canny = canny(img_open)
     cıktı = tess.image_to_string(img_canny,config=cong)
+    print('CIKTI ==> ', cıktı)
     return jsonify(cıktı)
+
+
 
 
 
