@@ -88,6 +88,14 @@ def get_products():
     return jsonify({'product': "Hello World"})
 
 
+@app.route('/meg', methods=['POST'])
+def meg():
+    
+    data = request.get_json()
+    
+    return jsonify(data)
+
+
 
 @app.route('/base', methods=['POST'])
 def base():
