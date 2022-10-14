@@ -15,7 +15,7 @@ import json
 from flask import Flask, request, jsonify, render_template
 from numpy import product
 import base64
-
+from roboflow import Roboflow
 
 #tess.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 tess.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
@@ -128,11 +128,34 @@ def base():
 
     #print(data['base64'])
     img = cv.imread('test.jpeg')
+
+
+    
+    rf = Roboflow(api_key="yk7y1Pvo0YE7xPuaLBvD")
+    project = rf.workspace("hasan-berat").project("gas-meter-3ajnr")
+    model = project.version(2).model
+
+    print(model.predict(img, confidence=40, overlap=30).json())
+    #model.predict(img, confidence=40, overlap=30).save("prediction.jpg")
+    j = model.predict(img, confidence=40, overlap=30).json()
+    #img_detect  = cv.imread("prediction.jpg")
+
+    detec = j['predictions']
+
+    for bounding_box in detec:
+        x1 = int(bounding_box['x'] - bounding_box['width'] / 2)
+        x2 = int(bounding_box['x'] + bounding_box['width'] / 2)
+        y1 = int(bounding_box['y'] - bounding_box['height'] / 2)
+        y2 = int(bounding_box['y'] + bounding_box['height'] / 2)
+        box = (x1, x2, y1, y2)
+
+    img_crop = img[y1:y2, x1:x2]
+
     img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     img_thresh = thresholding(img_gray)
     img_open = opening(img_thresh)
     img_canny = canny(img_open)
-    cıktı = tess.image_to_string(img_canny,config=cong)
+    cıktı = tess.image_to_string(img_crop,config=cong)
     print('CIKTI ==> ', cıktı)
     return jsonify(cıktı)
 
