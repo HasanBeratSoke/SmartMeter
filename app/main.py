@@ -98,7 +98,7 @@ def meg():
 
 
 
-def detect(img):
+""" def detect(img):
     rf = Roboflow(api_key="yk7y1Pvo0YE7xPuaLBvD")
     project = rf.workspace("hasan-berat").project("gas-meter-3ajnr")
     model = project.version(2).model
@@ -119,10 +119,16 @@ def detect(img):
 
     img_crop = img[y1:y2, x1:x2]
     return img_crop
+ """
 
 
 @app.route('/base', methods=['POST'])
 def base():
+    
+    global x1
+    global x2
+    global y1
+    global y2
     data = request.get_json()
     print('---------------------------------------')
     print(data['base64'])
