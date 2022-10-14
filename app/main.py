@@ -153,16 +153,30 @@ def base():
     #print(data['base64'])
     imge = cv.imread('test.jpeg')
 
+    img_path  = "test.jpeg"
+
+    rf = Roboflow(api_key="yk7y1Pvo0YE7xPuaLBvD")
+    project = rf.workspace("hasan-berat").project("gas-meter-3ajnr")
+    model = project.version(2).model
     
+    print(model.predict(img_path, confidence=40, overlap=30).json())
+    j = model.predict(img_path, confidence=40, overlap=30).json()
     
+    detec = j['predictions']
     
-    img_crop = detect(img=imge)
+    for bounding_box in detec:
+        x1 = int(bounding_box['x'] - bounding_box['width'] / 2)
+        x2 = int(bounding_box['x'] + bounding_box['width'] / 2)
+        y1 = int(bounding_box['y'] - bounding_box['height'] / 2)
+        y2 = int(bounding_box['y'] + bounding_box['height'] / 2)
+        
+    img = img[y1:y2, x1:x2]
 
     img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     img_thresh = thresholding(img_gray)
     img_open = opening(img_thresh)
     img_canny = canny(img_open)
-    cıktı = tess.image_to_string(img_crop,config=cong)
+    cıktı = tess.image_to_string(img,config=cong)
     print('CIKTI ==> ', cıktı)
     return jsonify(cıktı)
 
