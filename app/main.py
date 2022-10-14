@@ -121,14 +121,14 @@ def meg():
     return img_crop
  """
 
-
+x1 = 0
+x2 = 0
+y1 = 0
+y2 = 0
 
 @app.route('/base', methods=['POST'])
 def base():
-    global x1
-    global x2
-    global y1
-    global y2
+
 
     data = request.get_json()
     print('---------------------------------------')
@@ -185,6 +185,7 @@ def base():
     img_canny = canny(img_open)
     cıktı = tess.image_to_string(img,config=cong)
     print('CIKTI ==> ', cıktı)
+    
     return jsonify(cıktı)
 
 
