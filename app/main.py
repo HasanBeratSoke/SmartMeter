@@ -16,6 +16,7 @@ from flask import Flask, request, jsonify, render_template
 from numpy import product
 import base64
 from roboflow import Roboflow
+import asyncio
 
 #tess.pytesseract.tesseract_cmd = r'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 tess.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
@@ -121,14 +122,14 @@ def meg():
     return img_crop
  """
 
-x1 = 0
-x2 = 0
-y1 = 0
-y2 = 0
 
 @app.route('/base', methods=['POST'])
-def base():
-
+async def base():
+    
+    global x1 
+    global x2 
+    global y1 
+    global y2 
 
     data = request.get_json()
     print('---------------------------------------')
@@ -166,9 +167,11 @@ def base():
     project = rf.workspace("hasan-berat").project("gas-meter-3ajnr")
     model = project.version(2).model
     
-    print(model.predict(img_path, confidence=40, overlap=30).json())
-    j = model.predict(img_path, confidence=40, overlap=30).json()
-    
+    task1 = asyncio.create_task(model.predict(img_path, confidence=40, overlap=30).json())
+
+    j = await task1
+    print(j)
+
     detec = j['predictions']
     
     for bounding_box in detec:
