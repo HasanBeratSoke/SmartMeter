@@ -121,14 +121,15 @@ def meg():
     return img_crop
  """
 
-global x1
-global x2
-global y1
-global y2
+
 
 @app.route('/base', methods=['POST'])
 def base():
-    
+    global x1
+    global x2
+    global y1
+    global y2
+
     data = request.get_json()
     print('---------------------------------------')
     print(data['base64'])
@@ -157,7 +158,7 @@ def base():
     
 
     #print(data['base64'])
-    imge = cv.imread('test.jpeg')
+    img = cv.imread('test.jpeg')
 
     img_path  = "test.jpeg"
 
