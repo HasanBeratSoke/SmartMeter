@@ -123,6 +123,15 @@ def meg():
     return img_crop
  """
 
+rf = Roboflow(api_key="yk7y1Pvo0YE7xPuaLBvD")
+project = rf.workspace("hasan-berat").project("gas-meter-3ajnr")
+model = project.version(2).model
+
+
+async def pre(img_path):
+    j  =  model.predict(img_path, confidence=40, overlap=30).json()
+    return j 
+
 
 @app.route('/base', methods=['POST'])
 async def base():
@@ -164,34 +173,25 @@ async def base():
 
     img_path  = "test.jpeg"
 
-    rf = Roboflow(api_key="yk7y1Pvo0YE7xPuaLBvD")
+    """ rf = Roboflow(api_key="yk7y1Pvo0YE7xPuaLBvD")
     project = rf.workspace("hasan-berat").project("gas-meter-3ajnr")
     model = project.version(2).model
-    
-    task1 = asyncio.create_task(model.predict(img_path, confidence=40, overlap=30).json())
-
-   
+     """
+    #task1 = asyncio.create_task(model.predict(img_path, confidence=40, overlap=30).json())
+    j = asyncio.run(pre(img_path))
+    print(j)
  
     try:
-
-        j = await task1
-        print(j)
-
-
         detec = j['predictions']
-    
-
-
         for bounding_box in detec:
              x1 = int(bounding_box['x'] - bounding_box['width'] / 2)
              x2 = int(bounding_box['x'] + bounding_box['width'] / 2)
              y1 = int(bounding_box['y'] - bounding_box['height'] / 2)
              y2 = int(bounding_box['y'] + bounding_box['height'] / 2)
-    
-    
+      
         img = img[y1:y2, x1:x2]
 
-    except TypeError as err:
+    except NameError as err:
         print("type error: {0}".format(err))
 
 
