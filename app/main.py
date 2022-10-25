@@ -1,5 +1,6 @@
 
 #from email.mime import image
+from asyncio.windows_events import NULL
 import io
 from stat import filemode
 #from tkinter import Image
@@ -172,15 +173,24 @@ async def base():
     j = await task1
     print(j)
 
+
     detec = j['predictions']
     
-    for bounding_box in detec:
-        x1 = int(bounding_box['x'] - bounding_box['width'] / 2)
-        x2 = int(bounding_box['x'] + bounding_box['width'] / 2)
-        y1 = int(bounding_box['y'] - bounding_box['height'] / 2)
-        y2 = int(bounding_box['y'] + bounding_box['height'] / 2)
+    if(len(detec['x']) == 0):
+        print('NOT DETECTING')
+    
+    else:
+        for bounding_box in detec:
+            x1 = int(bounding_box['x'] - bounding_box['width'] / 2)
+            x2 = int(bounding_box['x'] + bounding_box['width'] / 2)
+            y1 = int(bounding_box['y'] - bounding_box['height'] / 2)
+            y2 = int(bounding_box['y'] + bounding_box['height'] / 2)
         
-    img = img[y1:y2, x1:x2]
+        img = img[y1:y2, x1:x2]
+
+    
+    
+    
 
     img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     img_thresh = thresholding(img_gray)
