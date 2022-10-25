@@ -170,15 +170,17 @@ async def base():
     
     task1 = asyncio.create_task(model.predict(img_path, confidence=40, overlap=30).json())
 
-    j = await task1
-    print(j)
-
-
-    detec = j['predictions']
-    
-
+   
  
     try:
+
+        j = await task1
+        print(j)
+
+
+        detec = j['predictions']
+    
+
 
         for bounding_box in detec:
              x1 = int(bounding_box['x'] - bounding_box['width'] / 2)
