@@ -128,7 +128,7 @@ project = rf.workspace("hasan-berat").project("gas-meter-3ajnr")
 model = project.version(2).model
 
 
-async def pre(img_path):
+def pre(img_path):
     j  =  model.predict(img_path, confidence=40, overlap=30).json()
     return j 
 
@@ -178,7 +178,8 @@ async def base():
     model = project.version(2).model
      """
     #task1 = asyncio.create_task(model.predict(img_path, confidence=40, overlap=30).json())
-    j = asyncio.run(pre(img_path))
+    #j = asyncio.run(pre(img_path))
+    j = pre(img_path)
     print(j)
  
     try:
