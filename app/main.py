@@ -176,19 +176,23 @@ async def base():
 
     detec = j['predictions']
     
-    if(len(detec['x']) == 0):
-        print('NOT DETECTING')
-    
-    else:
+
+ 
+    try:
+
         for bounding_box in detec:
-            x1 = int(bounding_box['x'] - bounding_box['width'] / 2)
-            x2 = int(bounding_box['x'] + bounding_box['width'] / 2)
-            y1 = int(bounding_box['y'] - bounding_box['height'] / 2)
-            y2 = int(bounding_box['y'] + bounding_box['height'] / 2)
-        
+             x1 = int(bounding_box['x'] - bounding_box['width'] / 2)
+             x2 = int(bounding_box['x'] + bounding_box['width'] / 2)
+             y1 = int(bounding_box['y'] - bounding_box['height'] / 2)
+             y2 = int(bounding_box['y'] + bounding_box['height'] / 2)
+    
+    
         img = img[y1:y2, x1:x2]
 
-    
+    except TypeError as err:
+        print("type error: {0}".format(err))
+
+
     
     
 
