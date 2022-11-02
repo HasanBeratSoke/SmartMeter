@@ -1,24 +1,29 @@
-#include <Base64.h>
+/*library*/
 
+#define CAMERA_MODEL_AI_THINKER // Has PSRAM     
+
+#include <Base64.h>
 #include <ArduinoJson.h>
 #include "HTTPClient.h"
 #include "Base64.h"
 #include <base64.h>
 #include "esp_camera.h"
-#include <WiFi.h>
-#define CAMERA_MODEL_AI_THINKER // Has PSRAM                     
+#include <WiFi.h>             
 #include "camera_pins.h"
 #include <WString.h>
 
+ 
 
+
+/*varibles*/
 const char* ssid = "HBS";
 const char* password = "kayserim38";
 const char* herokuapp = "https://gas-reader.herokuapp.com";
-String pdata;
-const char herokuaddress[] = "https://gas-reader.herokuapp.com";
-int port = 80;
 
+String pdata;
+int port = 80;
 const int ledPin = 4;
+
 
 void startCameraServer();
 
@@ -26,9 +31,11 @@ WiFiClient wifi;
 
 void setup() {
   
+  Serial.begin(115200);
 
   pinMode(ledPin, OUTPUT);
-  Serial.begin(115200);
+  digitalWrite(ledPin, HIGH);
+
   Serial.setDebugOutput(true);
   Serial.println();
 
@@ -79,7 +86,7 @@ void setup() {
   }
 
   sensor_t * s = esp_camera_sensor_get();
-  s->set_framesize(s, FRAMESIZE_VGA);
+  s->set_framesize(s, FRAMESIZE_VGA); //640 x 480
   s->set_vflip(s, 1);
   WiFi.begin(ssid, password);
 
@@ -101,39 +108,32 @@ void setup() {
 }
 
 void loop() {
-
+  
+  
   HTTPClient http; 
   http.begin("https://gas-reader.herokuapp.com/base");  
   http.addHeader("Content-Type", "application/json");
   
   Serial.println("making POST request");
+
+  pdata = grabImage();
+  String jsonData = "{\"base64\":\"" + pdata + "\"}";
+
+  Serial.println("Base-64 kodu: " + pdata);
+  Serial.println("JSOnDATA---->  "+jsonData);
   
-  StaticJsonDocument<200> doc;
-
-    pdata = grabImage();
-    String jsonData = "{\"base64\":\"" + pdata + "\"}";
-
-    
-    String requestBody;
-
-    Serial.println("Base-64 kodu: " + pdata);
-    Serial.println("JSOnDATA---->  "+jsonData);
-    Serial.println("REQUESTBODY---->  "+requestBody); 
-    int httpResponseCode = http.POST(jsonData);
+  int httpResponseCode = http.POST(jsonData);
  
-    if(httpResponseCode>0){
-       
-      String response = http.getString();                       
-       
-      Serial.println(httpResponseCode);   
-      Serial.println(response);
-     
-    }
-    else {
-     
-      //Serial.printf("Error occurred while sending HTTP POST: %s\n", httpClient.errorToString(statusCode).c_str());
-       
-    }
+  if(httpResponseCode>0)
+  {
+    String response = http.getString();                       
+    Serial.println(httpResponseCode);   
+    Serial.println(response);
+  }
+  else 
+  {
+    //Serial.printf("Error occurred while sending HTTP POST: %s\n", httpClient.errorToString(statusCode).c_str());   
+  }
   
   Serial.print("Status code: ");
 
@@ -141,6 +141,7 @@ void loop() {
 
   
   Serial.println("Wait five seconds");
+  
   delay(10000);
 
 
