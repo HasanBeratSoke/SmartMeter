@@ -97,7 +97,7 @@ def index():
 
 
 @app.route('/base', methods=['POST'])
-async def base():
+def base():
     
     global x1 
     global x2 
@@ -121,8 +121,9 @@ async def base():
     img_path  = "test.jpeg"
     img = cv.imread(img_path)
 
-    
-    j = pre(img_path)
+    j  =  model.predict(img_path, confidence=40, overlap=30).json()
+
+    #j = pre(img_path)
     print(j)
  
     try:
