@@ -16,13 +16,21 @@
 
 
 /*varibles*/
-const char* ssid = "HBS";
-const char* password = "kayserim38";
+/*const char* ssid = "HBS";
+const char* password = "kayserim38";*/
+const char* ssid = "Camlica-b1";
+const char* password = "52338038";
+
 const char* herokuapp = "https://gas-reader.herokuapp.com";
 
 String pdata;
-int port = 80;
+
 const int ledPin = 4;
+
+
+
+String response;
+
 
 
 void startCameraServer();
@@ -86,8 +94,30 @@ void setup() {
   }
 
   sensor_t * s = esp_camera_sensor_get();
-  s->set_framesize(s, FRAMESIZE_VGA); //640 x 480
-  s->set_vflip(s, 1);
+  s->set_framesize(s, FRAMESIZE_QVGA); //640 x 480
+  s->set_brightness(s, 1);     // -2 to 2
+  s->set_contrast(s, 1);       // -2 to 2
+  s->set_saturation(s, 0);     // -2 to 2
+  s->set_special_effect(s, 0); // 0 to 6 (0 - No Effect, 1 - Negative, 2 - Grayscale, 3 - Red Tint, 4 - Green Tint, 5 - Blue Tint, 6 - Sepia)
+  s->set_whitebal(s, 1);       // 0 = disable , 1 = enable
+  s->set_awb_gain(s, 1);       // 0 = disable , 1 = enable
+  s->set_wb_mode(s, 0);        // 0 to 4 - if awb_gain enabled (0 - Auto, 1 - Sunny, 2 - Cloudy, 3 - Office, 4 - Home)
+  s->set_exposure_ctrl(s, 1);  // 0 = disable , 1 = enable
+  s->set_aec2(s, 0);           // 0 = disable , 1 = enable
+  s->set_ae_level(s, 1);       // -2 to 2
+  s->set_aec_value(s, 300);    // 0 to 1200
+  s->set_gain_ctrl(s, 1);      // 0 = disable , 1 = enable
+  s->set_agc_gain(s, 0);       // 0 to 30
+  s->set_gainceiling(s, (gainceiling_t)0);  // 0 to 6
+  s->set_bpc(s, 0);            // 0 = disable , 1 = enable
+  s->set_wpc(s, 1);            // 0 = disable , 1 = enable
+  s->set_raw_gma(s, 1);        // 0 = disable , 1 = enable
+  s->set_lenc(s, 1);           // 0 = disable , 1 = enable
+  s->set_hmirror(s, 0);        // 0 = disable , 1 = enable
+  s->set_vflip(s, 0);          // 0 = disable , 1 = enable
+  s->set_dcw(s, 1);            // 0 = disable , 1 = enable
+  s->set_colorbar(s, 0);       // 0 = disable , 1 = enable
+  
   WiFi.begin(ssid, password);
 
 
@@ -119,28 +149,33 @@ void loop() {
   pdata = grabImage();
   String jsonData = "{\"base64\":\"" + pdata + "\"}";
 
-  Serial.println("Base-64 kodu: " + pdata);
+  //Serial.println("Base-64 kodu: " + pdata);
+  // burada kod patlıyor.?
   Serial.println("JSOnDATA---->  "+jsonData);
   
   int httpResponseCode = http.POST(jsonData);
  
   if(httpResponseCode>0)
   {
-    String response = http.getString();                       
+    response = http.getString();                       
     Serial.println(httpResponseCode);   
     Serial.println(response);
   }
   else 
   {
-    //Serial.printf("Error occurred while sending HTTP POST: %s\n", httpClient.errorToString(statusCode).c_str());   
+    Serial.printf("Error occurred while sending HTTP POST: %s\n");
+    //httpClient.errorToString(statusCode).c_str()   
   }
   
   Serial.print("Status code: ");
 
   Serial.print("Response: ");
-
+  
   
   Serial.println("Wait five seconds");
+
+  Serial.println(httpResponseCode);   
+  Serial.println(response);
   
   delay(10000);
 
