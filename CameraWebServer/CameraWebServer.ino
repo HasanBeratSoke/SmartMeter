@@ -1,5 +1,3 @@
-/*library*/
-
 #define CAMERA_MODEL_AI_THINKER // Has PSRAM     
 
 #include <Base64.h>
@@ -27,9 +25,31 @@ String pdata;
 
 const int ledPin = 4;
 
-
-
 String response;
+
+//--------------------------------------------------TIMER-----------------------------------
+
+volatile int interruptCounter =0;
+int totalInterruptCounter=0;
+
+//----------------------------------------------------------------------------------
+
+
+hw_timer_t * timer = NULL;
+portMUX_TYPE timerMux = portMUX_INITIALIZER_UNLOCKED;
+ 
+
+
+void IRAM_ATTR Sayac() {
+  portENTER_CRITICAL_ISR(&timerMux);
+  interruptCounter++;
+  portEXIT_CRITICAL_ISR(&timerMux);
+  
+ 
+}
+
+//-----------------------------------------------------------------------------
+
 
 
 
@@ -134,6 +154,19 @@ void setup() {
   Serial.print(WiFi.localIP());
   Serial.println("' to connect");
 
+//---------------------------------------TIMER SETUP --------------------------------------
+
+  //            0.indekssteki timer -> yani timer 1 i kullanıyoruz
+  // 80MHZ = 80 000 000 /80 den yani 1milyon mikrosaniye yani 1 saniye
+  // true de çalış demek
+  timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(timer, &Sayac, true);
+  timerAlarmWrite(timer, 5000000, true);
+  timerAlarmEnable(timer);
+
+//----------------------------------------------------------------------------
+ 
+
 
 }
 
@@ -146,11 +179,37 @@ void loop() {
   
   Serial.println("making POST request");
 
-  pdata = grabImage();
+//*********
+
+ if (interruptCounter > 0) {
+
+    portENTER_CRITICAL(&timerMux);
+    interruptCounter--;
+    portEXIT_CRITICAL(&timerMux);
+ 
+    totalInterruptCounter++;
+
+    digitalWrite(ledPin,HIGH); // flash acıldı
+    delay(750);
+
+    
+    Serial.print("An interrupt as occurred. Total number: ");
+    
+    Serial.print("Resim Cekildi....");
+    Serial.println(totalInterruptCounter);
+
+    pdata = grabImage();
+    
+  }
+  delay(500);
+  digitalWrite(ledPin,LOW); // flash kapatıldı
+
+  
+  //*******************
+
   String jsonData = "{\"base64\":\"" + pdata + "\"}";
 
   //Serial.println("Base-64 kodu: " + pdata);
-  // burada kod patlıyor.?
   Serial.println("JSOnDATA---->  "+jsonData);
   
   int httpResponseCode = http.POST(jsonData);
@@ -177,7 +236,11 @@ void loop() {
   Serial.println(httpResponseCode);   
   Serial.println(response);
   
-  delay(10000);
+ // delay(10000);
+
+
+
+  // TIMER İLE RESİM CEKME 
 
 
 }
