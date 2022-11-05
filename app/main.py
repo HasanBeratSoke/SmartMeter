@@ -92,7 +92,7 @@ app = Flask(__name__,template_folder = 'template')
 
 @app.route('/')
 def index():
-    return "<h1>Sayac Projesi...</h1>"
+    return "<img src='test.jpeg' alt='resim'/>"
 
 
 
@@ -122,7 +122,6 @@ def base():
     img = cv.imread(img_path)
 
     j  =  model.predict(img_path, confidence=40, overlap=30).json()
-
     #j = pre(img_path)
     print(j)
  
