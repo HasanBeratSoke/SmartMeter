@@ -22,7 +22,9 @@ from flask import send_from_directory
 
 tess.pytesseract.tesseract_cmd = '/app/.apt/usr/bin/tesseract'
 
-cong = r'--oem 3 --psm 6 outputbase digits'
+#cong = r'--oem 3 --psm 6 outputbase digits'
+cong = r'--psm 10 --oem 3 -c tessedit_char_whitelist=0123456789'
+
 
 # gray scale
 def get_grayscale(image):
@@ -92,8 +94,7 @@ app = Flask(__name__,template_folder = 'template')
 
 @app.route('/')
 def index():
-    return "<img src='test.jpeg' alt='resim'/>"
-
+    return '<img src="test.jpeg" />'
 
 
 @app.route('/base', methods=['POST'])

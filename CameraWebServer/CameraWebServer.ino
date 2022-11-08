@@ -14,10 +14,10 @@
 
 
 /*varibles*/
-/*const char* ssid = "HBS";
-const char* password = "kayserim38";*/
-const char* ssid = "Camlica-b1";
-const char* password = "52338038";
+const char* ssid = "HBS";
+const char* password = "kayserim38";
+/*const char* ssid = "Camlica-b1";
+const char* password = "52338038";*/
 
 const char* herokuapp = "https://gas-reader.herokuapp.com";
 
@@ -114,11 +114,11 @@ void setup() {
   }
 
   sensor_t * s = esp_camera_sensor_get();
-  s->set_framesize(s, FRAMESIZE_QVGA); //640 x 480
+  s->set_framesize(s, FRAMESIZE_VGA); //640 x 480
   s->set_brightness(s, 1);     // -2 to 2
   s->set_contrast(s, 1);       // -2 to 2
   s->set_saturation(s, 0);     // -2 to 2
-  s->set_special_effect(s, 0); // 0 to 6 (0 - No Effect, 1 - Negative, 2 - Grayscale, 3 - Red Tint, 4 - Green Tint, 5 - Blue Tint, 6 - Sepia)
+  s->set_special_effect(s, 2); // 0 to 6 (0 - No Effect, 1 - Negative, 2 - Grayscale, 3 - Red Tint, 4 - Green Tint, 5 - Blue Tint, 6 - Sepia)
   s->set_whitebal(s, 1);       // 0 = disable , 1 = enable
   s->set_awb_gain(s, 1);       // 0 = disable , 1 = enable
   s->set_wb_mode(s, 0);        // 0 to 4 - if awb_gain enabled (0 - Auto, 1 - Sunny, 2 - Cloudy, 3 - Office, 4 - Home)
@@ -156,7 +156,7 @@ void setup() {
 
 //---------------------------------------TIMER SETUP --------------------------------------
 
-  //            0.indekssteki timer -> yani timer 1 i kullanıyoruz
+  // 0.indekssteki timer -> yani timer 1 i kullanıyoruz
   // 80MHZ = 80 000 000 /80 den yani 1milyon mikrosaniye yani 1 saniye
   // true de çalış demek
   timer = timerBegin(0, 80, true);
